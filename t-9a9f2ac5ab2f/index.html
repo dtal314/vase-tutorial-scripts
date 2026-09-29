@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>VASE Tutorial Scripts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --paper: #ffffff;
+    --ink: #1e2227;
+    --muted: #5d6570;
+    --line: #d7dbe1;
+    --blue: #0063a3;
+    --blue-soft: #e6f0f7;
+    --brown: #6b4a32;
+    --brown-soft: #f3ece6;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171b;
+      --paper: #1c2026;
+      --ink: #e6e8eb;
+      --muted: #9aa3ad;
+      --line: #313740;
+      --blue: #5aa9e6;
+      --blue-soft: #1a2a38;
+      --brown: #c9a483;
+      --brown-soft: #2a231d;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171b;
+    --paper: #1c2026;
+    --ink: #e6e8eb;
+    --muted: #9aa3ad;
+    --line: #313740;
+    --blue: #5aa9e6;
+    --blue-soft: #1a2a38;
+    --brown: #c9a483;
+    --brown-soft: #2a231d;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: 32px 64px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 28px; }
+  header { display: grid; gap: 12px; border-bottom: 2px solid var(--ink); padding-bottom: 20px; }
+  .kicker {
+    font-family: "IBM Plex Mono", Consolas, monospace;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--brown);
+  }
+  h1 {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1; margin: 0;
+    letter-spacing: .01em; text-wrap: balance;
+  }
+  .intro { max-width: 68ch; margin: 0; color: var(--ink); }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    font-family: "IBM Plex Mono", Consolas, monospace; font-size: 12.5px; color: var(--muted);
+  }
+  .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  button {
+    font: 600 14px "Source Sans 3", "Segoe UI", sans-serif;
+    color: var(--blue); background: var(--paper); border: 1px solid var(--blue);
+    border-radius: 4px; padding: 7px 14px; cursor: pointer;
+  }
+  button:hover { background: var(--blue-soft); }
+  a.pdf { font: 600 14px "Source Sans 3", "Segoe UI", sans-serif; color: #fff; background: var(--blue); border: 1px solid var(--blue); border-radius: 4px; padding: 7px 14px; text-decoration: none; }
+  a.pdf:hover { filter: brightness(1.1); }
+  button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .copied { font-size: 13px; color: var(--muted); }
+  nav.toc {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 20px;
+    font-size: 14.5px; padding: 16px 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+  }
+  nav.toc a { color: var(--ink); text-decoration: none; display: flex; gap: 10px; padding: 3px 0; }
+  nav.toc a:hover { color: var(--blue); }
+  nav.toc .n { font-family: "IBM Plex Mono", Consolas, monospace; font-size: 12.5px; color: var(--brown); min-width: 2ch; padding-top: 2px; font-variant-numeric: tabular-nums; }
+  .group { display: grid; gap: 14px; }
+  .group h2 {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-weight: 600;
+    font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin: 8px 0 0; display: flex; align-items: center; gap: 12px;
+  }
+  .group h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  article {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+    padding: 20px 22px; display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px;
+  }
+  .num {
+    grid-row: span 3;
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-weight: 700; font-size: 40px; line-height: .9;
+    color: var(--blue); font-variant-numeric: tabular-nums;
+  }
+  article h3 {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-weight: 600; font-size: 24px; line-height: 1.15;
+    margin: 0; text-wrap: balance;
+  }
+  article p { margin: 6px 0 0; max-width: 66ch; }
+  .screen {
+    margin-top: 10px; font-size: 14px; color: var(--muted);
+    border-top: 1px dashed var(--line); padding-top: 9px;
+  }
+  .screen b {
+    font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; font-size: 11.5px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--brown); margin-right: 8px;
+  }
+  .flag {
+    display: inline-block; margin-left: 8px; vertical-align: middle;
+    font: 500 11px "IBM Plex Mono", Consolas, monospace; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--brown); background: var(--brown-soft); border-radius: 3px; padding: 2px 7px;
+  }
+  footer { font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+  @media (max-width: 520px) {
+    article { grid-template-columns: 1fr; padding: 18px 16px; }
+    .num { grid-row: auto; font-size: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Video outline · for the video team</div>
+    <h1>VASE Tutorial Scripts</h1>
+    <p class="intro">Fourteen short videos about VASE, the extension that has an AI model inside SketchUp. Each entry is one video: a paragraph that summarises what it teaches and the basic steps to show, then the screens to capture. Use the button and tab names exactly as they appear in VASE.</p>
+    <div class="meta"><span>VASE 0.29.1</span><span>SketchUp 2026 · Windows</span><span>Status: first draft</span></div>
+    <div class="actions"><a class="pdf" href="VASE-Tutorial-Scripts.pdf" download>Download the PDF</a><button type="button" id="copyAll">Copy all scripts</button><span class="copied" id="copyNote" aria-live="polite"></span></div>
+  </header>
+
+  <nav class="toc" aria-label="Videos">
+    <a href="#v1"><span class="n">1</span>Overview</a>
+    <a href="#v2"><span class="n">2</span>Setting up the AI: API vs local</a>
+    <a href="#v3"><span class="n">3</span>Selecting the AI and other important options</a>
+    <a href="#v4"><span class="n">4</span>Getting started: chat to model</a>
+    <a href="#v5"><span class="n">5</span>Getting started: iteration</a>
+    <a href="#v6"><span class="n">6</span>Model from images</a>
+    <a href="#v7"><span class="n">7</span>Model from CAD</a>
+    <a href="#v8"><span class="n">8</span>Model from research</a>
+    <a href="#v9"><span class="n">9</span>Model from combined sources</a>
+    <a href="#v10"><span class="n">10</span>Model from location</a>
+    <a href="#v11"><span class="n">11</span>CDs: expectations</a>
+    <a href="#v12"><span class="n">12</span>CDs: DXF / DWG</a>
+    <a href="#v13"><span class="n">13</span>CDs: into LayOut</a>
+    <a href="#v14"><span class="n">14</span>Features</a>
+  </nav>
+
+  <section class="group" aria-labelledby="g1">
+    <h2 id="g1">Start here</h2>
+    <article id="v1">
+      <div class="num">1</div>
+      <h3>Overview</h3>
+      <p>VASE is a SketchUp extension that models for you. You give it a picture, a drawing, an address or a sentence, and an AI (GPT-6 Astra, Claude Opus 5 or Claude Fable 5.1) builds the model inside SketchUp one step at a time, looking at each result and fixing what it sees. Every step is its own Undo, and VASE never saves your model for you. This video is the tour: open VASE from its toolbar button, then walk through the tabs one by one (Canvas, Chat &amp; Model, Location (Beta), Steps, Statistics, CDs (Beta) and Tutorials) and the gear that opens Settings. End on a finished model to show what is possible.</p>
+      <p class="screen"><b>On screen</b>VASE toolbar button, each tab for a few seconds, the gear, a finished model orbiting.</p>
+    </article>
+    <article id="v2">
+      <div class="num">2</div>
+      <h3>Setting up the AI: API vs local</h3>
+      <p>VASE reaches the AI in one of two ways, and this video helps viewers choose. Local uses the AI app already on their computer: Codex for GPT-6 Astra with a ChatGPT plan, or Claude Code for the Claude models with a Claude subscription. It runs on the plan they already pay for, at no extra cost. API means pasting a key from OpenAI or Anthropic and paying per use. Steps: install and sign in to Codex or Claude Code, open Settings with the gear, choose the model, choose the local option, press Find, and wait for the status to say signed in and ready. For the API route, paste the key instead. Press Save. Point out the cost meter: plan runs show what the same work would have cost on the API.</p>
+      <p class="screen"><b>On screen</b>Settings, the model choice, Find Codex / Find Claude Code, the green status dot, the cost meter during a run.</p>
+    </article>
+    <article id="v3">
+      <div class="num">3</div>
+      <h3>Selecting the AI and other important options</h3>
+      <p>A tour of Settings and the options that matter. Start with which AI models: GPT-6 Astra is the default and the strongest at geometry, and the two Claude models are good alternatives. Then the other cards: the Mapillary token for street photos, your own Google key for Google Earth 3D, a Bing key for VASE's own aerials, Components (3D Warehouse, automatic download and your own component libraries), and Voice (microphone language, voice, speed and reading replies aloud). In Chat &amp; Model, open the Model drawer to show the workspace: VASE only changes models saved in the workspace folder, and the Guard button controls that. Finish with Run self-test, which builds a small test shed with no AI and no cost.</p>
+      <p class="screen"><b>On screen</b>Each Settings card, the Model drawer with the green ready dot, the self-test shed appearing.</p>
+    </article>
+  </section>
+
+  <section class="group" aria-labelledby="g2">
+    <h2 id="g2">Getting started</h2>
+    <article id="v4">
+      <div class="num">4</div>
+      <h3>Getting started: chat to model</h3>
+      <p>The first real model. Save a new SketchUp model in the VASE workspace, open Chat &amp; Model, and type what should be built, for example "a small timber pavilion with a pitched roof". Pick a level of detail from 1 to 5 under the chat box and press Model it. Show the Steps tab filling up, each step with the code it ran and a picture of the result. The AI may ask a question in the chat; answer it, or let it decide. Viewers can type while it works, press Stop at any time, and use Undo to remove steps. Remind them to save the model themselves. The chat, the pictures and the steps are all kept with the project.</p>
+      <p class="screen"><b>On screen</b>Typing the prompt, the level pills, Model it, the Steps list growing, a question answered in the chat.</p>
+    </article>
+    <article id="v5">
+      <div class="num">5</div>
+      <h3>Getting started: iteration</h3>
+      <p>Models get better in rounds. After the first run, keep talking in the same chat: "make the windows taller", "add a canopy over the entrance", or choose a higher level of detail. VASE remembers the conversation for each model, so closing and reopening the model brings back the chat, the pictures and the history. Show the Canvas tab: the inputs, each run, its captures, the research and the CD sheets as cards joined by lines. Zoom with the mouse wheel and double-click a picture to see it full size. Show "new conversation" for a fresh start, and PDF or GIF under Steps to save a record of how the model was built.</p>
+      <p class="screen"><b>On screen</b>A follow-up message, the model changing, the Canvas board zoomed out then in, a picture opened full size, the PDF export.</p>
+    </article>
+  </section>
+
+  <section class="group" aria-labelledby="g3">
+    <h2 id="g3">Model from</h2>
+    <article id="v6">
+      <div class="num">6</div>
+      <h3>Model from images</h3>
+      <p>The most common start: a photo, a rendering or a sketch. Add pictures with File, Folder or Paste, or drag them onto the panel; several angles give better results. The picture search helps find more: Google Images and Street View open in the browser (snip the view, then Paste), and Free images shows openly licensed pictures right in the panel. Tell the AI what the picture shows and what to build, for example "model this four-storey brick building, every window as a component", and add the address or the building's name when you know it. Show the AI comparing its own captures with the picture as it works.</p>
+      <p class="screen"><b>On screen</b>Dragging a photo in, Paste, Free images, the prompt, captures side by side with the reference.</p>
+    </article>
+    <article id="v7">
+      <div class="num">7</div>
+      <h3>Model from CAD</h3>
+      <p>Start from drawings instead of pictures. Add a DWG, DXF, SKP, IFC, OBJ or similar file: VASE imports it into the model as a locked reference on the tag VASE Reference, and the AI models over the real linework. Point clouds (LAS, PLY, XYZ) are turned into plan and elevation views, and PDFs of drawings work as references too. Steps: add the file, tell the AI what it is and anything the drawing does not say, for example "this is the ground floor plan; three storeys at 12 feet", and press Model it. At the end, turn off the VASE Reference tag to reveal the clean model.</p>
+      <p class="screen"><b>On screen</b>Adding a DXF, the locked reference in the model, the AI building on it, the reference tag switched off.</p>
+    </article>
+    <article id="v8">
+      <div class="num">8</div>
+      <h3>Model from research</h3>
+      <p>When there is no picture, the AI can find its own information. Give it a building name or address, for example "research and model Union Station in Denver". It searches the web, looks at openly licensed photos, reads OpenStreetMap for the footprint, storeys and height, and checks street-level photos of the site. If something important is still unclear, it asks in the chat. Its final report lists every source it used and every size it had to assume. Show the research results appearing as cards on the Canvas.</p>
+      <p class="screen"><b>On screen</b>A one-line prompt with a name, research steps in Steps, research cards on the Canvas, the SOURCES list in the report.</p>
+    </article>
+    <article id="v9">
+      <div class="num">9</div>
+      <h3>Model from combined sources</h3>
+      <p>The best results come from giving VASE everything at once: photos for the look, CAD for exact sizes, and a name or address so it can research the rest. Show adding a plan DXF and two photos, typing the address, and asking for the building. Explain how the AI uses them together: sizes from the drawing, details from the pictures, the hidden sides from research. Every assumption it makes is tagged in its report, so viewers can see what came from where.</p>
+      <p class="screen"><b>On screen</b>The file chips for a DXF and two photos, the address in the prompt, the Canvas lines from each input to the run.</p>
+    </article>
+    <article id="v10">
+      <div class="num">10</div>
+      <h3>Model from location</h3>
+      <p>Put the model on a real site. In the Location (Beta) tab, type an address and press Find, or click the map, then press Use this spot; Draw area sets how far around the site to import. For imagery and ground, press Add Location (Bing, High): SketchUp's own Add Location opens, where you choose Bing, slide Resolution to High, zoom in, select a small region and import. VASE notices it and the AI builds on it. The same tab offers Terrain for real ground, OSM massing to extrude the neighbouring buildings, and Google Earth 3D for a photoreal mesh with your own Google key, each with a progress bar. Street View opens from each side of the site. Then ask the AI to model the site.</p>
+      <p class="screen"><b>On screen</b>The map, Use this spot, Draw area, SketchUp's Add Location with Bing and High, the progress bar turning green, OSM massing.</p>
+    </article>
+  </section>
+
+  <section class="group" aria-labelledby="g4">
+    <h2 id="g4">Construction documents</h2>
+    <article id="v11">
+      <div class="num">11</div>
+      <h3>CDs: expectations</h3>
+      <p>Set expectations before making construction documents. VASE's AI plans the sheets a model needs, measures the model exactly, and redraws each plan, elevation, section and detail as clean 2D CAD to a written standard, checking every sheet. It covers architecture, landscape and product sets, and follows your own CAD standards if you upload them. It is a strong first draft, not a finished or stamped set: anything the model does not show is drawn from typical construction and marked "assumed, verify", and a professional must review it. A full building set takes time. Steps: open the CDs (Beta) tab, pick the Subject, check the sheet size, scales and title block, and upload your CAD standards if you have them.</p>
+      <p class="screen"><b>On screen</b>The CDs (Beta) tab, the Subject list, sheet settings, Upload CAD standards, an example sheet with an "assumed, verify" note.</p>
+    </article>
+    <article id="v12">
+      <div class="num">12</div>
+      <h3>CDs: DXF / DWG</h3>
+      <p>Getting the drawings into AutoCAD. Press Draft the set with the AI and follow it on the CDs (Beta) tab's status bar and in Steps, where each sheet appears with its picture and its checks until they pass. Each finished sheet is a DXF file in the CD SETS folder, inside a folder named after the model and revision; Open CD folder goes straight there. Open the file in AutoCAD: model space holds the drawings at full size, and a layout tab for each sheet holds the title block with viewports at scale. Use Save As in AutoCAD when a DWG is needed. With "Draw the sheets into SketchUp too" ticked, each sheet also appears in the SketchUp model beside the building, with its own scene.</p>
+      <p class="screen"><b>On screen</b>Draft the set with the AI, the status bar, a sheet passing its checks, Open CD folder, the DXF in AutoCAD, the sheet group in SketchUp.</p>
+    </article>
+    <article id="v13">
+      <div class="num">13</div>
+      <h3>CDs: into LayOut <span class="flag">Confirm with Angelo</span></h3>
+      <p>Taking the sheets into LayOut for presentation. Angelo defines this workflow, so treat this entry as a starting outline and confirm the steps with him before recording. VASE places every sheet in the SketchUp model on the tag folder Construction Documents, with one scene per sheet, so each scene can be placed in a LayOut viewport; the DXF files can also be inserted into LayOut directly. Show the sheet scenes in SketchUp, send the model to LayOut, place a sheet scene on a page, and set its scale.</p>
+      <p class="screen"><b>On screen</b>The Construction Documents tag folder, the sheet scenes, Send to LayOut, a sheet placed on a LayOut page.</p>
+    </article>
+  </section>
+
+  <section class="group" aria-labelledby="g5">
+    <h2 id="g5">More</h2>
+    <article id="v14">
+      <div class="num">14</div>
+      <h3>Features</h3>
+      <p>A quick tour of the extras. Components: VASE can place ready-made items from your own component libraries or from 3D Warehouse instead of modelling them (Settings, Components), cleaned and tagged by kind. CAD standards: upload DWG, DXF, PDF or Word files on the CDs (Beta) tab and the AI follows them. Statistics: the model's polygon count, its components and the heaviest items, plus the time, tokens and cost of every run. Voice: talk to VASE with the microphone button and have replies read aloud. Canvas viewer: double-click any picture card to see the original full size.</p>
+      <p class="screen"><b>On screen</b>A bollard placed from 3D Warehouse, the CAD standards list, the Statistics tab, the microphone button, a picture opened full size.</p>
+    </article>
+  </section>
+
+  <footer>Draft outline written from VASE 0.29.1. Screens may change slightly with later versions; check button names against the current panel before recording.</footer>
+</div>
+
+<script>
+  (function () {
+    var button = document.getElementById('copyAll');
+    var note = document.getElementById('copyNote');
+    function allText() {
+      return Array.prototype.map.call(document.querySelectorAll('article'), function (a) {
+        var n = a.querySelector('.num').textContent.trim();
+        var title = a.querySelector('h3').childNodes[0].textContent.trim();
+        var paras = Array.prototype.map.call(a.querySelectorAll('p'), function (p) { return p.textContent.trim(); });
+        return n + '. ' + title + '\n' + paras.join('\n');
+      }).join('\n\n');
+    }
+    button.addEventListener('click', function () {
+      var text = allText();
+      var done = function () { note.textContent = 'Copied all 14 scripts.'; };
+      var fallback = function () {
+        var area = document.createElement('textarea');
+        area.value = text; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0';
+        document.body.appendChild(area); area.select();
+        try { document.execCommand('copy'); done(); } catch (e) { note.textContent = 'Select the text on the page to copy it.'; }
+        document.body.removeChild(area);
+      };
+      try {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } catch (e) { fallback(); }
+    });
+  })();
+</script>
+
+</body>
+</html>
